@@ -32,6 +32,12 @@ public abstract class AxisBase extends ComponentBase {
 
     private float mAxisLineWidth = 1f;
 
+    private int mTickLineColor = Color.WHITE;
+    private float mTickLineWidth = 1f;
+    private float mTickLineLength = 10f;
+    private float mTickLineOffset = -5f;
+
+
     /**
      * the actual array of entries
      */
@@ -84,6 +90,11 @@ public abstract class AxisBase extends ComponentBase {
      * flag that indicates if the line alongside the axis is drawn or not
      */
     protected boolean mDrawAxisLine = true;
+
+    /**
+     * flag indicating if the tick lines for this axis should be drawn
+     */
+    protected boolean mDrawTickLines = true;
 
     /**
      * flag that indicates of the labels of this axis should be drawn or not
@@ -176,6 +187,24 @@ public abstract class AxisBase extends ComponentBase {
     }
 
     /**
+     * Set this to true to enable drawing the tick lines for this axis.
+     *
+     * @param enabled
+     */
+    public void setDrawTickLines(boolean enabled) {
+        mDrawTickLines = enabled;
+    }
+
+    /**
+     * Returns true if drawing tick lines is enabled for this axis.
+     *
+     * @return
+     */
+    public boolean isDrawTickLinesEnabled() {
+        return mDrawTickLines;
+    }
+
+    /**
      * Set this to true if the line alongside the axis should be drawn or not.
      *
      * @param enabled
@@ -263,6 +292,80 @@ public abstract class AxisBase extends ComponentBase {
      */
     public float getGridLineWidth() {
         return mGridLineWidth;
+    }
+
+    /**
+     * Sets the width of the tick lines that are drawn away from each axis
+     * label.
+     *
+     * @param width
+     */
+    public void setTickLineWidth(float width) {
+        mTickLineWidth = Utils.convertDpToPixel(width);
+    }
+
+    /**
+     * Returns the width of the tick lines that are drawn away from each axis
+     * label.
+     *
+     * @return
+     */
+    public float getTickLineWidth() {
+        return mTickLineWidth;
+    }
+
+    /**
+     * Sets the color of the tick lines.
+     *
+     * @param color
+     */
+    public void setTickLineColor(int color) {
+        mTickLineColor = color;
+    }
+
+    /**
+     * Returns the color of the tick lines.
+     *
+     * @return
+     */
+    public int getTickLineColor() {
+        return mTickLineColor;
+    }
+
+    /**
+     * Sets the length of the tick lines.
+     *
+     * @param length
+     */
+    public void setTickLineLength(float length) {
+        mTickLineLength = length;
+    }
+
+    /**
+     * Returns the length of the tick lines.
+     *
+     * @return
+     */
+    public float getTickLineLength() {
+        return mTickLineLength;
+    }
+
+    /**
+     * Sets the offset of the tick lines.
+     *
+     * @param offset
+     */
+    public void setTickLineOffset(float offset) {
+        mTickLineOffset = offset;
+    }
+
+    /**
+     * Returns the offset of the tick lines.
+     *
+     * @return
+     */
+    public float getTickLineOffset() {
+        return mTickLineOffset;
     }
 
     /**

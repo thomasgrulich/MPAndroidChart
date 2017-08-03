@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
@@ -251,6 +252,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mXAxisRenderer.renderAxisLabels(canvas);
         mAxisRendererLeft.renderAxisLabels(canvas);
         mAxisRendererRight.renderAxisLabels(canvas);
+
+        mXAxisRenderer.renderTickLines(canvas);
+        mAxisRendererLeft.renderTickLines(canvas);
+        mAxisRendererRight.renderTickLines(canvas);
 
         if (isClipValuesToContentEnabled()) {
             clipRestoreCount = canvas.save();

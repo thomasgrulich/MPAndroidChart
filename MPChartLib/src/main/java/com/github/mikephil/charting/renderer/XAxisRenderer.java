@@ -40,6 +40,11 @@ public class XAxisRenderer extends AxisRenderer {
         mGridPaint.setPathEffect(mXAxis.getGridDashPathEffect());
     }
 
+    protected void setupTickPaint() {
+        mTickLinePaint.setColor(mXAxis.getTickLineColor());
+        mTickLinePaint.setStrokeWidth(mXAxis.getTickLineWidth());
+    }
+
     @Override
     public void computeAxis(float min, float max, boolean inverted) {
 
@@ -231,7 +236,10 @@ public class XAxisRenderer extends AxisRenderer {
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
     protected Path mRenderGridLinesPath = new Path();
+    protected Path mRenderTickLinesPath = new Path();
     protected float[] mRenderGridLinesBuffer = new float[2];
+    protected float[] mRenderTickLinesBuffer = new float[2];
+
     @Override
     public void renderGridLines(Canvas c) {
 
@@ -335,6 +343,58 @@ public class XAxisRenderer extends AxisRenderer {
 
             c.restoreToCount(clipRestoreCount);
         }
+    }
+
+    @Override
+    public void renderTickLines(Canvas c) {
+        if (!mXAxis.isDrawTickLinesEnabled() || !mXAxis.isEnabled())
+            return;
+
+        int clipRestoreCount = c.save();
+        c.clipRect(getGridClippingRect());
+
+        if(mRenderTickLinesBuffer.length != mAxis.mEntryCount * 2){
+            mRenderTickLinesBuffer = new float[mXAxis.mEntryCount * 2];
+        }
+        float[] positions = mRenderTickLinesBuffer;
+
+        for (int i = 0; i < positions.length; i += 2) {
+            positions[i] = mXAxis.mEntries[i / 2];
+            positions[i + 1] = mXAxis.mEntries[i / 2];
+        }
+
+        mTrans.pointValuesToPixel(positions);
+
+        setupTickPaint();
+
+        Path tickLinePath = mRenderTickLinesPath;
+        tickLinePath.reset();
+
+        for (int i = 0; i < positions.length; i += 2) {
+
+            drawTickLine(c, positions[i], positions[i + 1], tickLinePath, mXAxis.getTickLineLength());
+        }
+
+        c.restoreToCount(clipRestoreCount);
+    }
+
+    /**
+     * Draws the tick line at the specified position using the provided path.
+     *
+     * @param c
+     * @param x
+     * @param y
+     * @param tickLinePath
+     */
+    protected void drawTickLine(Canvas c, float x, float y, Path tickLinePath, float height) {
+
+        tickLinePath.moveTo(x, mViewPortHandler.contentBottom() - height/2);
+        tickLinePath.lineTo(x, mViewPortHandler.contentBottom() - height/2);
+
+        // draw a path because lines don't support dashing on lower android versions
+        c.drawPath(tickLinePath, mTickLinePaint);
+
+        tickLinePath.reset();
     }
 
     float[] mLimitLineSegmentsBuffer = new float[4];

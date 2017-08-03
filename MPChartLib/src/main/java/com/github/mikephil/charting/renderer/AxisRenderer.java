@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.renderer.Renderer;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
@@ -45,6 +46,11 @@ public abstract class AxisRenderer extends Renderer {
      */
     protected Paint mLimitLinePaint;
 
+    /**
+     * paint used for the tick lines
+     */
+    protected Paint mTickLinePaint;
+
     public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans, AxisBase axis) {
         super(viewPortHandler);
 
@@ -68,6 +74,11 @@ public abstract class AxisRenderer extends Renderer {
 
             mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             mLimitLinePaint.setStyle(Paint.Style.STROKE);
+
+            mTickLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            mTickLinePaint.setColor(this.mAxis.getTickLineColor());
+            mTickLinePaint.setStrokeWidth(mAxis.getTickLineWidth());
+            mTickLinePaint.setStyle(Style.STROKE);
         }
     }
 
@@ -284,4 +295,11 @@ public abstract class AxisRenderer extends Renderer {
      * @param c
      */
     public abstract void renderLimitLines(Canvas c);
+
+    /**
+     * Draws the tick lines belonging to the axis.
+     *
+     * @param c
+     */
+    public abstract void renderTickLines(Canvas c);
 }

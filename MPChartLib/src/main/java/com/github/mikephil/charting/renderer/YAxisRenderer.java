@@ -129,6 +129,8 @@ public class YAxisRenderer extends AxisRenderer {
     }
 
     protected Path mRenderGridLinesPath = new Path();
+    protected Path mRenderTickLinesPath = new Path();
+
     @Override
     public void renderGridLines(Canvas c) {
 
@@ -343,5 +345,58 @@ public class YAxisRenderer extends AxisRenderer {
 
             c.restoreToCount(clipRestoreCount);
         }
+    }
+
+    @Override
+    public void renderTickLines(Canvas c) {
+
+        if (mYAxis.isDrawTickLinesEnabled()) {
+
+            int clipRestoreCount = c.save();
+            c.clipRect(getGridClippingRect());
+
+            float[] positions = getTransformedPositions();
+
+            mTickLinePaint.setColor(mYAxis.getTickLineColor());
+            mTickLinePaint.setStrokeWidth(mYAxis.getTickLineWidth());
+            // mTickLinePaint.setPathEffect(mYAxis.getGridDashPathEffect());
+
+            Path tickLinePath = mRenderTickLinesPath;
+            tickLinePath.reset();
+
+            // draw the grid
+            for (int i = 0; i < positions.length; i += 2) {
+
+                // draw a path because lines don't support dashing on lower android versions
+                // c.drawPath(linePath(tickLinePath, i, positions), mTickLinePaint);
+                // tickLinePath.reset();
+                drawTickLine(c, positions[i + 1], positions[i], tickLinePath, mYAxis.getTickLineLength());
+            }
+
+            c.restoreToCount(clipRestoreCount);
+        }
+
+        if (mYAxis.isDrawZeroLineEnabled()) {
+            drawZeroLine(c);
+        }
+    }
+
+    /**
+     * Draws the tick line at the specified position using the provided path.
+     *
+     * @param c
+     * @param x
+     * @param y
+     * @param tickLinePath
+     */
+    protected void drawTickLine(Canvas c, float x, float y, Path tickLinePath, float offset) {
+
+        tickLinePath.moveTo(mViewPortHandler.contentRight() + offset, y);
+        tickLinePath.lineTo(mViewPortHandler.contentRight() + offset, y);
+
+        // draw a path because lines don't support dashing on lower android versions
+        c.drawPath(tickLinePath, mTickLinePaint);
+
+        tickLinePath.reset();
     }
 }
