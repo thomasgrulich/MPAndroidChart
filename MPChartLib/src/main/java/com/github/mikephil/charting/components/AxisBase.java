@@ -32,11 +32,10 @@ public abstract class AxisBase extends ComponentBase {
 
     private float mAxisLineWidth = 1f;
 
-    private int mTickLineColor = Color.WHITE;
-    private float mTickLineWidth = 1f;
+    private int mTickLineColor = Color.BLACK;
+    private float mTickLineWidth = 3f;
     private float mTickLineLength = 10f;
-    private float mTickLineOffset = -5f;
-
+    private float mTickLineOffset = -10f;
 
     /**
      * the actual array of entries

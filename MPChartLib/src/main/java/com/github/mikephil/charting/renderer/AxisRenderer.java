@@ -73,10 +73,9 @@ public abstract class AxisRenderer extends Renderer {
             mGridPaint.setAlpha(90);
 
             mTickPaint = new Paint();
-            mTickPaint.setColor(Color.RED);
+            mTickPaint.setColor(Color.BLACK);
             mTickPaint.setStrokeWidth(3f);
             mTickPaint.setStyle(Style.STROKE);
-            //mTickPaint.setAlpha(90);
 
             mAxisLinePaint = new Paint();
             mAxisLinePaint.setColor(Color.BLACK);

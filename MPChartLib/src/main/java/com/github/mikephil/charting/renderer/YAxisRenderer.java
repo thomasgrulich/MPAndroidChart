@@ -147,9 +147,6 @@ public class YAxisRenderer extends AxisRenderer {
             mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
             mGridPaint.setPathEffect(mYAxis.getGridDashPathEffect());
 
-            mTickPaint.setColor(Color.BLUE);
-            mTickPaint.setStrokeWidth(3f);
-
             Path gridLinePath = mRenderGridLinesPath;
             gridLinePath.reset();
 
@@ -158,8 +155,6 @@ public class YAxisRenderer extends AxisRenderer {
 
                 // draw a path because lines don't support dashing on lower android versions
                 c.drawPath(linePath(gridLinePath, i, positions), mGridPaint);
-                gridLinePath.reset();
-                c.drawPath(tickPath(gridLinePath, i, positions), mTickPaint);
                 gridLinePath.reset();
             }
 
@@ -356,7 +351,45 @@ public class YAxisRenderer extends AxisRenderer {
     @Override
     public void renderTickLines(Canvas c) {
 
+        if (!mYAxis.isEnabled())
+            return;
 
+        if (mYAxis.isDrawTickLinesEnabled()) {
+
+            int clipRestoreCount = c.save();
+            c.clipRect(getTickClippingRect());
+
+            float[] positions = getTransformedPositions();
+
+            mTickPaint.setColor(mAxis.getTickLineColor());
+            mTickPaint.setStrokeWidth(mAxis.getTickLineWidth());
+
+            Path tickLinePath = mRenderTickLinesPath;
+            tickLinePath.reset();
+
+            AxisDependency dependency = mYAxis.getAxisDependency();
+
+            // draw the grid
+            for (int i = 0; i < positions.length; i += 2) {
+
+                c.drawPath(tickPath(tickLinePath, i, positions, dependency), mTickPaint);
+                tickLinePath.reset();
+            }
+
+            c.restoreToCount(clipRestoreCount);
+        }
+
+        if (mYAxis.isDrawZeroLineEnabled()) {
+            drawZeroLine(c);
+        }
+    }
+
+    protected RectF mTickClippingRect = new RectF();
+
+    public RectF getTickClippingRect() {
+        mTickClippingRect.set(mViewPortHandler.getContentRect());
+        mTickClippingRect.inset(mAxis.getTickLineOffset(), -mAxis.getTickLineWidth());
+        return mTickClippingRect;
     }
 
     /**
@@ -367,10 +400,16 @@ public class YAxisRenderer extends AxisRenderer {
      * @param positions
      * @return
      */
-    protected Path tickPath(Path p, int i, float[] positions) {
+    protected Path tickPath(Path p, int i, float[] positions, AxisDependency axisDependency) {
 
-        p.moveTo(mViewPortHandler.contentRight() - 10, positions[i + 1]);
-        p.lineTo(mViewPortHandler.contentRight() + 20, positions[i + 1]);
+        if (AxisDependency.LEFT.equals(axisDependency)) {
+            p.moveTo(mViewPortHandler.contentLeft() + mAxis.getTickLineOffset(), positions[i + 1]);
+            p.lineTo(mViewPortHandler.contentLeft() + mAxis.getTickLineLength(), positions[i + 1]);
+        }
+        else {
+            p.moveTo(mViewPortHandler.contentRight() + mAxis.getTickLineOffset(), positions[i + 1]);
+            p.lineTo(mViewPortHandler.contentRight() + mAxis.getTickLineLength(), positions[i + 1]);
+        }
 
         return p;
     }
