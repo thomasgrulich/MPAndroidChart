@@ -148,6 +148,9 @@ public class YAxisRenderer extends AxisRenderer {
             mGridPaint.setStrokeWidth(mYAxis.getGridLineWidth());
             mGridPaint.setPathEffect(mYAxis.getGridDashPathEffect());
 
+            mTickPaint.setColor(Color.BLUE);
+            mTickPaint.setStrokeWidth(3f);
+
             Path gridLinePath = mRenderGridLinesPath;
             gridLinePath.reset();
 
@@ -156,6 +159,8 @@ public class YAxisRenderer extends AxisRenderer {
 
                 // draw a path because lines don't support dashing on lower android versions
                 c.drawPath(linePath(gridLinePath, i, positions), mGridPaint);
+                gridLinePath.reset();
+                c.drawPath(tickPath(gridLinePath, i, positions), mTickPaint);
                 gridLinePath.reset();
             }
 
@@ -187,6 +192,22 @@ public class YAxisRenderer extends AxisRenderer {
 
         p.moveTo(mViewPortHandler.offsetLeft(), positions[i + 1]);
         p.lineTo(mViewPortHandler.contentRight(), positions[i + 1]);
+
+        return p;
+    }
+
+    /**
+     * Calculates the path for a tick line.
+     *
+     * @param p
+     * @param i
+     * @param positions
+     * @return
+     */
+    protected Path tickPath(Path p, int i, float[] positions) {
+
+        p.moveTo(mViewPortHandler.contentRight() - 10, positions[i + 1]);
+        p.lineTo(mViewPortHandler.contentRight() + 20, positions[i + 1]);
 
         return p;
     }

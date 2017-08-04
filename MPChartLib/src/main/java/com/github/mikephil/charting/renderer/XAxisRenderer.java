@@ -41,8 +41,8 @@ public class XAxisRenderer extends AxisRenderer {
     }
 
     protected void setupTickPaint() {
-        mTickLinePaint.setColor(mXAxis.getTickLineColor());
-        mTickLinePaint.setStrokeWidth(mXAxis.getTickLineWidth());
+        mTickPaint.setColor(Color.BLUE);
+        mTickPaint.setStrokeWidth(3f);
     }
 
     @Override
@@ -262,6 +262,7 @@ public class XAxisRenderer extends AxisRenderer {
         mTrans.pointValuesToPixel(positions);
 
         setupGridPaint();
+        setupTickPaint();
 
         Path gridLinePath = mRenderGridLinesPath;
         gridLinePath.reset();
@@ -269,6 +270,7 @@ public class XAxisRenderer extends AxisRenderer {
         for (int i = 0; i < positions.length; i += 2) {
 
             drawGridLine(c, positions[i], positions[i + 1], gridLinePath);
+            drawTickLine(c, positions[i], positions[i + 1], gridLinePath);
         }
 
         c.restoreToCount(clipRestoreCount);
@@ -297,6 +299,25 @@ public class XAxisRenderer extends AxisRenderer {
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(gridLinePath, mGridPaint);
+
+        gridLinePath.reset();
+    }
+
+    /**
+     * Draws the tick line at the specified position using the provided path.
+     *
+     * @param c
+     * @param x
+     * @param y
+     * @param gridLinePath
+     */
+    protected void drawTickLine(Canvas c, float x, float y, Path gridLinePath) {
+
+        gridLinePath.moveTo(x, mViewPortHandler.contentBottom() - 10);
+        gridLinePath.lineTo(x, mViewPortHandler.contentBottom() + 20);
+
+        // draw a path because lines don't support dashing on lower android versions
+        c.drawPath(gridLinePath, mTickPaint);
 
         gridLinePath.reset();
     }

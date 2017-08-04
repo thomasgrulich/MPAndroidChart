@@ -32,6 +32,11 @@ public abstract class AxisRenderer extends Renderer {
     protected Paint mGridPaint;
 
     /**
+     * paint object for the tick lines
+     */
+    protected Paint mTickPaint;
+
+    /**
      * paint for the x-label values
      */
     protected Paint mAxisLabelPaint;
@@ -67,6 +72,12 @@ public abstract class AxisRenderer extends Renderer {
             mGridPaint.setStyle(Style.STROKE);
             mGridPaint.setAlpha(90);
 
+            mTickPaint = new Paint();
+            mTickPaint.setColor(Color.RED);
+            mTickPaint.setStrokeWidth(3f);
+            mTickPaint.setStyle(Style.STROKE);
+            //mTickPaint.setAlpha(90);
+
             mAxisLinePaint = new Paint();
             mAxisLinePaint.setColor(Color.BLACK);
             mAxisLinePaint.setStrokeWidth(1f);
@@ -99,6 +110,16 @@ public abstract class AxisRenderer extends Renderer {
      */
     public Paint getPaintGrid() {
         return mGridPaint;
+    }
+
+    /**
+     * Returns the Paint object that is used for drawing the tick-lines of the
+     * axis.
+     *
+     * @return
+     */
+    public Paint getPaintTick() {
+        return mTickPaint;
     }
 
     /**
