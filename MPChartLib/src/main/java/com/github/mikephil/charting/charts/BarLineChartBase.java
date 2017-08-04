@@ -216,6 +216,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mAxisRendererLeft.renderGridLines(canvas);
         mAxisRendererRight.renderGridLines(canvas);
 
+        mXAxisRenderer.renderTickLines(canvas);
+        mAxisRendererLeft.renderTickLines(canvas);
+        mAxisRendererRight.renderTickLines(canvas);
+
         if (mXAxis.isEnabled() && mXAxis.isDrawLimitLinesBehindDataEnabled())
             mXAxisRenderer.renderLimitLines(canvas);
 
@@ -252,10 +256,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mXAxisRenderer.renderAxisLabels(canvas);
         mAxisRendererLeft.renderAxisLabels(canvas);
         mAxisRendererRight.renderAxisLabels(canvas);
-
-        mXAxisRenderer.renderTickLines(canvas);
-        mAxisRendererLeft.renderTickLines(canvas);
-        mAxisRendererRight.renderTickLines(canvas);
 
         if (isClipValuesToContentEnabled()) {
             clipRestoreCount = canvas.save();

@@ -235,10 +235,10 @@ public class XAxisRenderer extends AxisRenderer {
     protected void drawLabel(Canvas c, String formattedLabel, float x, float y, MPPointF anchor, float angleDegrees) {
         Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
     }
+
+
     protected Path mRenderGridLinesPath = new Path();
-    protected Path mRenderTickLinesPath = new Path();
     protected float[] mRenderGridLinesBuffer = new float[2];
-    protected float[] mRenderTickLinesBuffer = new float[2];
 
     @Override
     public void renderGridLines(Canvas c) {
@@ -303,25 +303,6 @@ public class XAxisRenderer extends AxisRenderer {
         gridLinePath.reset();
     }
 
-    /**
-     * Draws the tick line at the specified position using the provided path.
-     *
-     * @param c
-     * @param x
-     * @param y
-     * @param gridLinePath
-     */
-    protected void drawTickLine(Canvas c, float x, float y, Path gridLinePath) {
-
-        gridLinePath.moveTo(x, mViewPortHandler.contentBottom() - 10);
-        gridLinePath.lineTo(x, mViewPortHandler.contentBottom() + 20);
-
-        // draw a path because lines don't support dashing on lower android versions
-        c.drawPath(gridLinePath, mTickPaint);
-
-        gridLinePath.reset();
-    }
-
     protected float[] mRenderLimitLinesBuffer = new float[2];
     protected RectF mLimitLineClippingRect = new RectF();
 
@@ -366,37 +347,12 @@ public class XAxisRenderer extends AxisRenderer {
         }
     }
 
+    protected Path mRenderTickLinesPath = new Path();
+    protected float[] mRenderTickLinesBuffer = new float[2];
+
     @Override
     public void renderTickLines(Canvas c) {
-        if (!mXAxis.isDrawTickLinesEnabled() || !mXAxis.isEnabled())
-            return;
 
-        int clipRestoreCount = c.save();
-        c.clipRect(getGridClippingRect());
-
-        if(mRenderTickLinesBuffer.length != mAxis.mEntryCount * 2){
-            mRenderTickLinesBuffer = new float[mXAxis.mEntryCount * 2];
-        }
-        float[] positions = mRenderTickLinesBuffer;
-
-        for (int i = 0; i < positions.length; i += 2) {
-            positions[i] = mXAxis.mEntries[i / 2];
-            positions[i + 1] = mXAxis.mEntries[i / 2];
-        }
-
-        mTrans.pointValuesToPixel(positions);
-
-        setupTickPaint();
-
-        Path tickLinePath = mRenderTickLinesPath;
-        tickLinePath.reset();
-
-        for (int i = 0; i < positions.length; i += 2) {
-
-            drawTickLine(c, positions[i], positions[i + 1], tickLinePath, mXAxis.getTickLineLength());
-        }
-
-        c.restoreToCount(clipRestoreCount);
     }
 
     /**
@@ -407,13 +363,13 @@ public class XAxisRenderer extends AxisRenderer {
      * @param y
      * @param tickLinePath
      */
-    protected void drawTickLine(Canvas c, float x, float y, Path tickLinePath, float height) {
+    protected void drawTickLine(Canvas c, float x, float y, Path tickLinePath) {
 
-        tickLinePath.moveTo(x, mViewPortHandler.contentBottom() - height/2);
-        tickLinePath.lineTo(x, mViewPortHandler.contentBottom() - height/2);
+        tickLinePath.moveTo(x, mViewPortHandler.contentBottom() - 10);
+        tickLinePath.lineTo(x, mViewPortHandler.contentBottom() + 20);
 
         // draw a path because lines don't support dashing on lower android versions
-        c.drawPath(tickLinePath, mTickLinePaint);
+        c.drawPath(tickLinePath, mTickPaint);
 
         tickLinePath.reset();
     }
