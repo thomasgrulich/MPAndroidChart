@@ -93,7 +93,7 @@ public abstract class AxisBase extends ComponentBase {
     /**
      * flag indicating if the tick lines for this axis should be drawn
      */
-    protected boolean mDrawTickLines = true;
+    protected boolean mDrawTickLines = false;
 
     /**
      * flag that indicates of the labels of this axis should be drawn or not
