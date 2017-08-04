@@ -34,7 +34,7 @@ public abstract class AxisBase extends ComponentBase {
 
     private int mTickLineColor = Color.BLACK;
     private float mTickLineWidth = 3f;
-    private float mTickLineLength = 10f;
+    private float mTickLineLength = 20f;
     private float mTickLineOffset = -10f;
 
     /**

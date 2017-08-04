@@ -404,11 +404,11 @@ public class YAxisRenderer extends AxisRenderer {
 
         if (AxisDependency.LEFT.equals(axisDependency)) {
             p.moveTo(mViewPortHandler.contentLeft() + mAxis.getTickLineOffset(), positions[i + 1]);
-            p.lineTo(mViewPortHandler.contentLeft() + mAxis.getTickLineLength(), positions[i + 1]);
+            p.lineTo(mViewPortHandler.contentLeft() + mAxis.getTickLineLength() + mAxis.getTickLineOffset(), positions[i + 1]);
         }
         else {
             p.moveTo(mViewPortHandler.contentRight() + mAxis.getTickLineOffset(), positions[i + 1]);
-            p.lineTo(mViewPortHandler.contentRight() + mAxis.getTickLineLength(), positions[i + 1]);
+            p.lineTo(mViewPortHandler.contentRight() + mAxis.getTickLineLength() + mAxis.getTickLineOffset(), positions[i + 1]);
         }
 
         return p;

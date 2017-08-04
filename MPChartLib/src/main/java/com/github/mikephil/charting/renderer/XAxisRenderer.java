@@ -400,7 +400,7 @@ public class XAxisRenderer extends AxisRenderer {
     protected void drawTickLine(Canvas c, float x, float y, Path tickLinePath) {
 
         tickLinePath.moveTo(x, mViewPortHandler.contentBottom() + mAxis.getTickLineOffset());
-        tickLinePath.lineTo(x, mViewPortHandler.contentBottom() + mAxis.getTickLineLength());
+        tickLinePath.lineTo(x, mViewPortHandler.contentBottom() + mAxis.getTickLineLength() + mAxis.getTickLineOffset());
 
         // draw a path because lines don't support dashing on lower android versions
         c.drawPath(tickLinePath, mTickPaint);
