@@ -354,7 +354,6 @@ public class XAxisRenderer extends AxisRenderer {
             return;
 
         int clipRestoreCount = c.save();
-        c.clipRect(getTickClippingRect());
 
         if(mRenderTickLinesBuffer.length != mAxis.mEntryCount * 2){
             mRenderTickLinesBuffer = new float[mXAxis.mEntryCount * 2];
@@ -379,14 +378,6 @@ public class XAxisRenderer extends AxisRenderer {
         }
 
         c.restoreToCount(clipRestoreCount);
-    }
-
-    protected RectF mTickClippingRect = new RectF();
-
-    public RectF getTickClippingRect() {
-        mTickClippingRect.set(mViewPortHandler.getContentRect());
-        mTickClippingRect.inset(-mAxis.getTickLineWidth(), mAxis.getTickLineOffset());
-        return mTickClippingRect;
     }
 
     /**

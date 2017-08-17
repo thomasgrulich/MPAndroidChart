@@ -357,7 +357,6 @@ public class YAxisRenderer extends AxisRenderer {
         if (mYAxis.isDrawTickLinesEnabled()) {
 
             int clipRestoreCount = c.save();
-            c.clipRect(getTickClippingRect());
 
             float[] positions = getTransformedPositions();
 
@@ -369,7 +368,7 @@ public class YAxisRenderer extends AxisRenderer {
 
             AxisDependency dependency = mYAxis.getAxisDependency();
 
-            // draw the grid
+            // draw the ticks
             for (int i = 0; i < positions.length; i += 2) {
 
                 c.drawPath(tickPath(tickLinePath, i, positions, dependency), mTickPaint);
@@ -382,14 +381,6 @@ public class YAxisRenderer extends AxisRenderer {
         if (mYAxis.isDrawZeroLineEnabled()) {
             drawZeroLine(c);
         }
-    }
-
-    protected RectF mTickClippingRect = new RectF();
-
-    public RectF getTickClippingRect() {
-        mTickClippingRect.set(mViewPortHandler.getContentRect());
-        mTickClippingRect.inset(mAxis.getTickLineOffset(), -mAxis.getTickLineWidth());
-        return mTickClippingRect;
     }
 
     /**
